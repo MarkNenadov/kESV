@@ -1,4 +1,4 @@
-**kESV2**
+*kESV2*
 
 A wrapper library for the Crossway ESV Bible API
 
