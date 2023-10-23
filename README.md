@@ -5,6 +5,8 @@ A wrapper library for the Crossway ESV Bible API
 
 To use this library you will have to apply for an ESV API key with Crossway (https://api.esv.org/).
 
+3/4 endpoints are covered (Passage Text, Passage Audio, and Passage Search).
+
 Usage
 -----
 
@@ -13,10 +15,13 @@ Note: The following examples are showing explicit typing for the purpose of demo
 ```
 val service = BibleLookupServiceImp("YOUR API KEY"")
 
+// passage audio
 val mp3Bytes: ByteArray = service.getMp3Bytes("John 3:16")
 
+// passage text
 val text: List<String> = service.getText("John 3:16-17")
 
+// passage search
 val searchResult = bibleLookupService.searchText("merciful")
 searchResult.forEach { println("${it.reference} -> ${it.content}") }
 
