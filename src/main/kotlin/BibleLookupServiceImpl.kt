@@ -25,7 +25,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
         if ( response.isOk() ) {
             return response.getBytes()
         } else {
-            throw Exception( "getMp3Bytes lookup failed" );
+            throw Exception( "getMp3Bytes lookup failed" )
         }
     }
 
@@ -40,7 +40,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
         if ( response.isOk() ) {
             return response.getJsonObject().getStringArray( "passages")
         } else {
-            throw Exception( "getText lookup failed" );
+            throw Exception( "getText lookup failed" )
         }
     }
 
@@ -55,7 +55,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
         if ( response.isOk() ) {
             return response.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
         } else {
-            throw Exception( "searchText lookup failed" );
+            throw Exception( "searchText lookup failed" )
         }
     }
 
