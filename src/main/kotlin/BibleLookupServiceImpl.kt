@@ -20,12 +20,12 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
 
         val request = buildGetRequest(url, generateHeaders( privateKey ) )
 
-        val response = sendRequest( request )
+        val response = sendRequest(request)
 
-        if ( response.isOk() ) {
-            return response.getBytes()
+        return if (response.isOk()) {
+            response.getBytes()
         } else {
-            throw Exception( "getMp3Bytes lookup failed" )
+            throw BibleLookupException( "getMp3Bytes lookup failed" )
         }
     }
 
@@ -35,12 +35,12 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
 
         val request = buildGetRequest(url, generateHeaders( privateKey ) )
 
-        val response = sendRequest( request )
+        val response = sendRequest(request)
 
-        if ( response.isOk() ) {
-            return response.getJsonObject().getStringArray( "passages")
+        return if (response.isOk()) {
+            response.getJsonObject().getStringArray( "passages")
         } else {
-            throw Exception( "getText lookup failed" )
+            throw BibleLookupException( "getText lookup failed" )
         }
     }
 
@@ -50,31 +50,27 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
 
         val request = buildGetRequest(url, generateHeaders( privateKey ) )
 
-        val response = sendRequest( request )
+        val response = sendRequest(request)
 
-        if ( response.isOk() ) {
-            return response.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
+        return if (response.isOk()) {
+            response.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
         } else {
-            throw Exception( "searchText lookup failed" )
+            throw BibleLookupException( "searchText lookup failed" )
         }
     }
 
     override fun getRandomVerse(): String {
-        try {
+        return try {
             val bibleData = getBibleDataJsonObject()
             val randomBibleBookName = getRandomBibleBookName( bibleData )
             val randomBook = bibleData.getObject( randomBibleBookName )
             val randomChapterNumber = getRandomChapterNumber( randomBook )
             val randomVerseNumber = getRandomVerseNumber( randomBook, randomChapterNumber )
 
-            val verses = getText("$randomBibleBookName $randomChapterNumber:$randomVerseNumber")
-
-            return verses[0]
+            getText("$randomBibleBookName $randomChapterNumber:$randomVerseNumber")[0]
         } catch (e: Exception) {
-            println("An error occurred: ${e.message}")
+            throw BibleLookupException("An error occurred: ${e.message}")
         }
-
-        return ""
     }
 
 }
