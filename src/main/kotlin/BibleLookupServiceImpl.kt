@@ -8,6 +8,7 @@ const val ESV_API_URL_PREFIX = "https://api.esv.org/"
 const val PASSAGE_AUDIO_ENDPOINT = "v3/passage/audio/"
 const val SEARCH_TEXT_ENDPOINT = "v3/passage/search/"
 const val PASSAGE_TEXT_ENDPOINT = "v3/passage/text/"
+const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService {
     private  fun generateHeaders( privateKey: String ): Headers {
@@ -41,6 +42,21 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
             response.getJsonObject().getStringArray( "passages")
         } else {
             throw BibleLookupException( "getText lookup failed" )
+        }
+    }
+
+    override fun getHtml(lookupValue: String): List<String> {
+        val passage = utf8UrlValue( lookupValue)
+        val url = "$ESV_API_URL_PREFIX$PASSAGE_HTML_ENDPOINT?q=$passage"
+
+        val request = buildGetRequest(url, generateHeaders( privateKey ) )
+
+        val response = sendRequest(request)
+
+        return if (response.isOk()) {
+            response.getJsonObject().getStringArray( "passages")
+        } else {
+            throw BibleLookupException( "getHtml lookup failed" )
         }
     }
 
