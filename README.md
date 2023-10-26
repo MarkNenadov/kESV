@@ -7,6 +7,11 @@ To use this library you will have to apply for an ESV API key with Crossway (htt
 
 All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Passage Search).
 
+Releases
+--------
+
+v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
+
 Usage
 -----
 
