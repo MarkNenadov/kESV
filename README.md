@@ -1,5 +1,5 @@
 
-#kESV2
+# kESV2
 
 A wrapper library for the Crossway ESV Bible API
 
@@ -7,11 +7,11 @@ To use this library you will have to apply for an ESV API key with Crossway (htt
 
 All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Passage Search).
 
-##Releases
+## Releases
 
 v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
 
-##Usage
+## Usage
 
 Note: The following examples are showing explicit typing for the purpose of demonstration.
 
@@ -34,6 +34,6 @@ searchResult.forEach { println("${it.reference} -> ${it.content}") }
 val randomVerse: Stringh: String = service.getRandomVerse()
 ```
 
-##Thanks
+## Thanks
 
 * Thanks to Ben Flannery (https://github.com/oflannabhra) for bible.json (https://github.com/oflannabhra/bible.json), which was used to provide the data necessary for the random Bible verse functionality
