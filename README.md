@@ -31,6 +31,7 @@ val html: List<String> = service.getHtml("John 3:16-17")
 val searchResult = bibleLookupService.searchText("merciful")
 searchResult.forEach { println("${it.reference} -> ${it.content}") }
 
+// random verse
 val randomVerse: Stringh: String = service.getRandomVerse()
 ```
 

@@ -16,52 +16,45 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
         return Headers.Builder().add( "Authorization", "Token $privateKey" ).add( "Content-Type", "audio/mp3" ).build()
     }
 
-    fun makeRequest( middleOfUrl: String, lookupValue: String ): HttpResponse {
+    private inline fun <T> makeRequest(
+        middleOfUrl: String,
+        lookupValue: String,
+        responseHandler: (HttpResponse) -> T
+    ): T {
         val passage = utf8UrlValue( lookupValue)
         val url = "$ESV_API_URL_PREFIX$middleOfUrl$passage"
 
         val request = buildGetRequest(url, generateHeaders( privateKey ) )
+        val response = sendRequest(request)
 
-        return sendRequest(request)
+        return if (response.isOk()) {
+            responseHandler(response)
+        } else {
+            throw BibleLookupException("$middleOfUrl lookup failed")
+        }
     }
 
     override fun getMp3Bytes(lookupValue: String): ByteArray {
-        val response = makeRequest( "$PASSAGE_AUDIO_ENDPOINT?q=", lookupValue )
-
-        return if (response.isOk()) {
-            response.getBytes()
-        } else {
-            throw BibleLookupException( "getMp3Bytes lookup failed" )
+        return makeRequest( "$PASSAGE_AUDIO_ENDPOINT?q=", lookupValue ){
+            it.getBytes()
         }
     }
 
     override fun getText(lookupValue: String): List<String> {
-        val response = makeRequest( "$PASSAGE_TEXT_ENDPOINT?q=", lookupValue )
-
-        return if (response.isOk()) {
-            response.getJsonObject().getStringArray( "passages")
-        } else {
-            throw BibleLookupException( "getText lookup failed" )
+        return makeRequest( "$PASSAGE_TEXT_ENDPOINT?q=", lookupValue ) {
+            it.getJsonObject().getStringArray( "passages")
         }
     }
 
     override fun getHtml(lookupValue: String): List<String> {
-        val response = makeRequest( "$PASSAGE_HTML_ENDPOINT?q=", lookupValue )
-
-        return if (response.isOk()) {
-            response.getJsonObject().getStringArray( "passages")
-        } else {
-            throw BibleLookupException( "getHtml lookup failed" )
+        return makeRequest( "$PASSAGE_HTML_ENDPOINT?q=", lookupValue ) {
+            it.getJsonObject().getStringArray( "passages")
         }
     }
 
     override fun searchText(searchText: String): List<SearchResult> {
-        val response = makeRequest( "$SEARCH_TEXT_ENDPOINT?q=", searchText )
-
-        return if (response.isOk()) {
-            response.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
-        } else {
-            throw BibleLookupException( "searchText lookup failed" )
+        return makeRequest( "$SEARCH_TEXT_ENDPOINT?q=", searchText ) {
+            it.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
         }
     }
 
@@ -78,5 +71,4 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
             throw BibleLookupException("An error occurred: ${e.message}")
         }
     }
-
 }
