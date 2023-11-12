@@ -17,12 +17,12 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     private inline fun <T> makeRequest(
-        middleOfUrl: String,
+        endpoint: String,
         lookupValue: String,
         responseHandler: (HttpResponse) -> T
     ): T {
         val passage = utf8UrlValue( lookupValue)
-        val url = "$ESV_API_URL_PREFIX$middleOfUrl$passage"
+        val url = "$ESV_API_URL_PREFIX$endpoint?q=$passage"
 
         val request = buildGetRequest(url, generateHeaders( privateKey ) )
         val response = sendRequest(request)
@@ -30,30 +30,30 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
         return if (response.isOk()) {
             responseHandler(response)
         } else {
-            throw BibleLookupException("$middleOfUrl lookup failed")
+            throw BibleLookupException("$endpoint lookup failed")
         }
     }
 
     override fun getMp3Bytes(lookupValue: String): ByteArray {
-        return makeRequest( "$PASSAGE_AUDIO_ENDPOINT?q=", lookupValue ){
+        return makeRequest( PASSAGE_AUDIO_ENDPOINT, lookupValue ){
             it.getBytes()
         }
     }
 
     override fun getText(lookupValue: String): List<String> {
-        return makeRequest( "$PASSAGE_TEXT_ENDPOINT?q=", lookupValue ) {
+        return makeRequest( PASSAGE_TEXT_ENDPOINT, lookupValue ) {
             it.getJsonObject().getStringArray( "passages")
         }
     }
 
     override fun getHtml(lookupValue: String): List<String> {
-        return makeRequest( "$PASSAGE_HTML_ENDPOINT?q=", lookupValue ) {
+        return makeRequest( PASSAGE_HTML_ENDPOINT, lookupValue ) {
             it.getJsonObject().getStringArray( "passages")
         }
     }
 
     override fun searchText(searchText: String): List<SearchResult> {
-        return makeRequest( "$SEARCH_TEXT_ENDPOINT?q=", searchText ) {
+        return makeRequest( SEARCH_TEXT_ENDPOINT, searchText ) {
             it.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
         }
     }
