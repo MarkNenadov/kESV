@@ -1,4 +1,5 @@
 import com.squareup.okhttp.Headers
+import org.pythonbyte.krux.http.HttpResponse
 
 import org.pythonbyte.krux.http.buildGetRequest
 import org.pythonbyte.krux.http.sendRequest
@@ -15,13 +16,17 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
         return Headers.Builder().add( "Authorization", "Token $privateKey" ).add( "Content-Type", "audio/mp3" ).build()
     }
 
-    override fun getMp3Bytes(lookupValue: String): ByteArray {
+    fun makeRequest( middleOfUrl: String, lookupValue: String ): HttpResponse {
         val passage = utf8UrlValue( lookupValue)
-        val url = "$ESV_API_URL_PREFIX$PASSAGE_AUDIO_ENDPOINT?q=$passage"
+        val url = "$ESV_API_URL_PREFIX$middleOfUrl$passage"
 
         val request = buildGetRequest(url, generateHeaders( privateKey ) )
 
-        val response = sendRequest(request)
+        return sendRequest(request)
+    }
+
+    override fun getMp3Bytes(lookupValue: String): ByteArray {
+        val response = makeRequest( "$PASSAGE_AUDIO_ENDPOINT?q=", lookupValue )
 
         return if (response.isOk()) {
             response.getBytes()
@@ -31,12 +36,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     override fun getText(lookupValue: String): List<String> {
-        val passage = utf8UrlValue( lookupValue)
-        val url = "$ESV_API_URL_PREFIX$PASSAGE_TEXT_ENDPOINT?q=$passage"
-
-        val request = buildGetRequest(url, generateHeaders( privateKey ) )
-
-        val response = sendRequest(request)
+        val response = makeRequest( "$PASSAGE_TEXT_ENDPOINT?q=", lookupValue )
 
         return if (response.isOk()) {
             response.getJsonObject().getStringArray( "passages")
@@ -46,12 +46,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     override fun getHtml(lookupValue: String): List<String> {
-        val passage = utf8UrlValue( lookupValue)
-        val url = "$ESV_API_URL_PREFIX$PASSAGE_HTML_ENDPOINT?q=$passage"
-
-        val request = buildGetRequest(url, generateHeaders( privateKey ) )
-
-        val response = sendRequest(request)
+        val response = makeRequest( "$PASSAGE_HTML_ENDPOINT?q=", lookupValue )
 
         return if (response.isOk()) {
             response.getJsonObject().getStringArray( "passages")
@@ -61,12 +56,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     override fun searchText(searchText: String): List<SearchResult> {
-        val searchTextValue = utf8UrlValue( searchText)
-        val url = "$ESV_API_URL_PREFIX$SEARCH_TEXT_ENDPOINT?q=$searchTextValue"
-
-        val request = buildGetRequest(url, generateHeaders( privateKey ) )
-
-        val response = sendRequest(request)
+        val response = makeRequest( "$SEARCH_TEXT_ENDPOINT?q=", searchText )
 
         return if (response.isOk()) {
             response.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
