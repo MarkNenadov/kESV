@@ -13,7 +13,10 @@ const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService {
     private  fun generateHeaders( privateKey: String ): Headers {
-        return Headers.Builder().add( "Authorization", "Token $privateKey" ).add( "Content-Type", "audio/mp3" ).build()
+        return Headers.Builder()
+            .add( "Authorization", "Token $privateKey" )
+            .add( "Content-Type", "audio/mp3" )
+            .build()
     }
 
     private inline fun <T> makeRequest(
