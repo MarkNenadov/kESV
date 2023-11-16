@@ -3,7 +3,6 @@ interface BibleLookupService {
 
     fun getText(lookupValue: String): List<String>
 
-
     fun getHtml(lookupValue: String): List<String>
 
     fun searchText(searchText: String): List<SearchResult>

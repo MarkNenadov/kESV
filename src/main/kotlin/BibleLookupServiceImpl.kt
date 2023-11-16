@@ -13,10 +13,10 @@ const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService {
     private fun generateHeaders( privateKey: String, contentType: String ): Headers {
-        return Headers.Builder()
-            .add( "Authorization", "Token $privateKey" )
-            .add( "Content-Type", contentType )
-            .build()
+        return Headers.Builder().apply {
+            add("Authorization", "Token $privateKey")
+            add("Content-Type", contentType)
+        }.build()
     }
 
     private inline fun <T> makeRequest(
@@ -45,7 +45,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     override fun getText(lookupValue: String): List<String> {
-        return makeRequest( PASSAGE_TEXT_ENDPOINT, lookupValue, "plain/text" ) {
+        return makeRequest( PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain" ) {
             it.getJsonObject().getStringArray( "passages")
         }
     }
@@ -57,7 +57,7 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     override fun searchText(searchText: String): List<SearchResult> {
-        return makeRequest( SEARCH_TEXT_ENDPOINT, searchText, "plain/text" ) {
+        return makeRequest( SEARCH_TEXT_ENDPOINT, searchText, "text/plain" ) {
             it.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
         }
     }
