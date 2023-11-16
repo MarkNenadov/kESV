@@ -34,6 +34,10 @@ searchResult.forEach { println("${it.reference} -> ${it.content}") }
 
 // random verse
 val randomVerse: Stringh: String = service.randomVerse()
+
+// 4 random verses (param must be 10 or less)
+val randomVerses: Stringh: String = service.randomVerses( 4 )
+
 ```
 
 ## Thanks

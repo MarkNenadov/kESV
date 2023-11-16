@@ -10,6 +10,7 @@ const val SEARCH_TEXT_ENDPOINT = "v3/passage/search/"
 const val PASSAGE_TEXT_ENDPOINT = "v3/passage/text/"
 const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
+const val MAX_RANDOM_VERSES_PER_REQUEST = 10
 class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupService {
     private fun generateHeaders(privateKey: String, contentType: String): Headers {
         return Headers.Builder().apply {
@@ -73,5 +74,13 @@ class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupServic
         } catch (e: Exception) {
             throw BibleLookupException("An error occurred: ${e.message}")
         }
+    }
+
+    override fun randomVerses(resultCount: Int): List<String> {
+        require(resultCount <= MAX_RANDOM_VERSES_PER_REQUEST) {
+            "for randomVerses(), resultCount must be 10 or less"
+        }
+
+        return List(resultCount) { randomVerse() }
     }
 }

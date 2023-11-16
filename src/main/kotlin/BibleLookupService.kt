@@ -8,4 +8,6 @@ interface BibleLookupService {
     fun searchText(searchText: String): List<SearchResult>
 
     fun randomVerse(): String
+
+    fun randomVerses(resultCount: Int): List<String>
 }
