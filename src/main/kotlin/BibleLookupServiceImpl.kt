@@ -12,22 +12,23 @@ const val PASSAGE_TEXT_ENDPOINT = "v3/passage/text/"
 const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService {
-    private  fun generateHeaders( privateKey: String ): Headers {
+    private fun generateHeaders( privateKey: String, contentType: String ): Headers {
         return Headers.Builder()
             .add( "Authorization", "Token $privateKey" )
-            .add( "Content-Type", "audio/mp3" )
+            .add( "Content-Type", contentType )
             .build()
     }
 
     private inline fun <T> makeRequest(
         endpoint: String,
         lookupValue: String,
+        contentType: String,
         responseHandler: (HttpResponse) -> T
     ): T {
         val passage = utf8UrlValue( lookupValue)
         val url = "$ESV_API_URL_PREFIX$endpoint?q=$passage"
 
-        val request = buildGetRequest(url, generateHeaders( privateKey ) )
+        val request = buildGetRequest(url, generateHeaders( privateKey, contentType ) )
         val response = sendRequest(request)
 
         return if (response.isOk()) {
@@ -38,25 +39,25 @@ class BibleLookupServiceImpl(private val privateKey: String): BibleLookupService
     }
 
     override fun getMp3Bytes(lookupValue: String): ByteArray {
-        return makeRequest( PASSAGE_AUDIO_ENDPOINT, lookupValue ){
+        return makeRequest( PASSAGE_AUDIO_ENDPOINT, lookupValue, "audio/mp3" ){
             it.getBytes()
         }
     }
 
     override fun getText(lookupValue: String): List<String> {
-        return makeRequest( PASSAGE_TEXT_ENDPOINT, lookupValue ) {
+        return makeRequest( PASSAGE_TEXT_ENDPOINT, lookupValue, "plain/text" ) {
             it.getJsonObject().getStringArray( "passages")
         }
     }
 
     override fun getHtml(lookupValue: String): List<String> {
-        return makeRequest( PASSAGE_HTML_ENDPOINT, lookupValue ) {
+        return makeRequest( PASSAGE_HTML_ENDPOINT, lookupValue, "text/html" ) {
             it.getJsonObject().getStringArray( "passages")
         }
     }
 
     override fun searchText(searchText: String): List<SearchResult> {
-        return makeRequest( SEARCH_TEXT_ENDPOINT, searchText ) {
+        return makeRequest( SEARCH_TEXT_ENDPOINT, searchText, "plain/text" ) {
             it.getJsonObject().getArray( "results").map{ SearchResult.create( it ) }
         }
     }
