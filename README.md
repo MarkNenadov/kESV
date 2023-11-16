@@ -9,8 +9,9 @@ All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Pass
 
 ## Releases
 
-v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
-v1.1 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.1/kESV-1.1.jar
+* v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
+
+* v1.1 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.1/kESV-1.1.jar
 
 ## Usage
 
