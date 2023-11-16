@@ -10,6 +10,7 @@ All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Pass
 ## Releases
 
 v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
+v1.1 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.1/kESV-1.1.jar
 
 ## Usage
 
@@ -19,20 +20,20 @@ Note: The following examples are showing explicit typing for the purpose of demo
 val service = BibleLookupServiceImp("YOUR API KEY"")
 
 // passage audio
-val mp3Bytes: ByteArray = service.getMp3Bytes("John 3:16")
+val mp3Bytes: ByteArray = service.mp3Bytes("John 3:16")
 
 // passage text
-val text: List<String> = service.getText("John 3:16-17")
+val text: List<String> = service.text("John 3:16-17")
 
 // passage html
-val html: List<String> = service.getHtml("John 3:16-17")
+val html: List<String> = service.html("John 3:16-17")
 
 // passage search
 val searchResult = bibleLookupService.searchText("merciful")
 searchResult.forEach { println("${it.reference} -> ${it.content}") }
 
 // random verse
-val randomVerse: Stringh: String = service.getRandomVerse()
+val randomVerse: Stringh: String = service.randomVerse()
 ```
 
 ## Thanks

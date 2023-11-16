@@ -37,19 +37,19 @@ class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupServic
         }
     }
 
-    override fun getMp3Bytes(lookupValue: String): ByteArray {
+    override fun mp3Bytes(lookupValue: String): ByteArray {
         return makeRequest(PASSAGE_AUDIO_ENDPOINT, lookupValue, "audio/mp3") {
             it.getBytes()
         }
     }
 
-    override fun getText(lookupValue: String): List<String> {
+    override fun text(lookupValue: String): List<String> {
         return makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain") {
             it.getJsonObject().getStringArray("passages")
         }
     }
 
-    override fun getHtml(lookupValue: String): List<String> {
+    override fun html(lookupValue: String): List<String> {
         return makeRequest(PASSAGE_HTML_ENDPOINT, lookupValue, "text/html") {
             it.getJsonObject().getStringArray("passages")
         }
@@ -61,7 +61,7 @@ class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupServic
         }
     }
 
-    override fun getRandomVerse(): String {
+    override fun randomVerse(): String {
         return try {
             val bibleData = getBibleDataJsonObject()
             val randomBibleBookName = getRandomBibleBookName(bibleData)
@@ -69,7 +69,7 @@ class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupServic
             val randomChapterNumber = getRandomChapterNumber(randomBook)
             val randomVerseNumber = getRandomVerseNumber(randomBook, randomChapterNumber)
 
-            getText("$randomBibleBookName $randomChapterNumber:$randomVerseNumber")[0]
+            text("$randomBibleBookName $randomChapterNumber:$randomVerseNumber")[0]
         } catch (e: Exception) {
             throw BibleLookupException("An error occurred: ${e.message}")
         }
