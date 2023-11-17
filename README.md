@@ -46,3 +46,9 @@ val randomVerses: Stringh: String = service.randomVerses( 4 )
 ## Thanks
 
 * Thanks to Ben Flannery (https://github.com/oflannabhra) for bible.json (https://github.com/oflannabhra/bible.json), which was used to provide the data necessary for the random Bible verse functionality
+
+## TODO
+
+* Implement caching on other queries (beyond text() and html())
+* Size limit the cache in some reasonable way (maybe 50 entries)
+* way to limit random verse to NT or OT
