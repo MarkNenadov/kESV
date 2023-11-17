@@ -12,7 +12,7 @@ All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Pass
 * v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
 
 * v1.1 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.1/kESV-1.1.jar
-* 
+
 * v1.2 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.2/kESV-1.2.jar
 
 ## Usage
@@ -25,11 +25,11 @@ val service = BibleLookupServiceImp("YOUR API KEY"")
 // passage audio
 val mp3Bytes: ByteArray = service.mp3Bytes("John 3:16")
 
-// passage text (note: useCache is optional)
-val text: List<String> = service.text("John 3:16-17",useCache=false)
+// passage text (note: useCache is optiona and defaults to false)
+val text: List<String> = service.text("John 3:16-17",useCache=true)
 
-// passage html
-val html: List<String> = service.html("John 3:16-17",useCache=false)
+// passage html (note: useCache is optiona and defaults to false)
+val html: List<String> = service.html("John 3:16-17",useCache=true)
 
 // passage search
 val searchResult = bibleLookupService.searchText("merciful")
@@ -46,3 +46,9 @@ val randomVerses: Stringh: String = service.randomVerses( 4 )
 ## Thanks
 
 * Thanks to Ben Flannery (https://github.com/oflannabhra) for bible.json (https://github.com/oflannabhra/bible.json), which was used to provide the data necessary for the random Bible verse functionality
+
+## TODO
+
+* Implement caching on other queries (beyond text() and html())
+* Size limit the cache in some reasonable way (maybe 50 entries)
+* way to limit random verse to NT or OT
