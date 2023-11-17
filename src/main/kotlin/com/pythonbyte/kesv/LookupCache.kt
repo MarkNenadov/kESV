@@ -1,8 +1,10 @@
 package com.pythonbyte.kesv
 
+const val MAXIMUM_LOOKUP_CACHE_SIZE = 25
+
 class LookupCache {
-    private val textLookupCache = mutableMapOf<String, List<String>>()
-    private val htmlLookupCache = mutableMapOf<String, List<String>>()
+    private val textLookupCache = LinkedHashMap<String, List<String>>()
+    private val htmlLookupCache = LinkedHashMap<String, List<String>>()
 
     fun hasTextValue(lookupValue: String) = lookupValue in textLookupCache
 
@@ -13,10 +15,18 @@ class LookupCache {
     fun getHtmlValue(lookupValue: String) = htmlLookupCache[lookupValue]
 
     fun addTextValue(key: String, value: List<String>) {
-        textLookupCache.put(key, value)
+        if (textLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
+            val firstKey = textLookupCache.keys.first()
+            textLookupCache.remove(firstKey)
+        }
+        textLookupCache[key] = value
     }
 
     fun addHtmlValue(key: String, value: List<String>) {
-        htmlLookupCache.put(key, value)
+        if (htmlLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
+            val firstKey = htmlLookupCache.keys.first()
+            htmlLookupCache.remove(firstKey)
+        }
+        htmlLookupCache[key] = value
     }
 }
