@@ -25,11 +25,11 @@ val service = BibleLookupServiceImp("YOUR API KEY"")
 // passage audio
 val mp3Bytes: ByteArray = service.mp3Bytes("John 3:16")
 
-// passage text (note: useCache is optional)
-val text: List<String> = service.text("John 3:16-17",useCache=false)
+// passage text (note: useCache is optiona and defaults to false)
+val text: List<String> = service.text("John 3:16-17",useCache=true)
 
-// passage html
-val html: List<String> = service.html("John 3:16-17",useCache=false)
+// passage html (note: useCache is optiona and defaults to false)
+val html: List<String> = service.html("John 3:16-17",useCache=true)
 
 // passage search
 val searchResult = bibleLookupService.searchText("merciful")
