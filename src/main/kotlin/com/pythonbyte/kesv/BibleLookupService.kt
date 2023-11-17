@@ -1,9 +1,11 @@
+package com.pythonbyte.kesv
+
 interface BibleLookupService {
     fun mp3Bytes(lookupValue: String): ByteArray
 
-    fun text(lookupValue: String): List<String>
+    fun text(lookupValue: String, useCache: Boolean = false): List<String>
 
-    fun html(lookupValue: String): List<String>
+    fun html(lookupValue: String, useCache: Boolean = false): List<String>
 
     fun searchText(searchText: String): List<SearchResult>
 

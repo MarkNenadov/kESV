@@ -1,3 +1,5 @@
+package com.pythonbyte.kesv
+
 import com.squareup.okhttp.Headers
 import org.pythonbyte.krux.http.HttpResponse
 import org.pythonbyte.krux.http.buildGetRequest
@@ -12,6 +14,8 @@ const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 const val MAX_RANDOM_VERSES_PER_REQUEST = 10
 class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupService {
+    private val lookupCache = LookupCache()
+
     private fun generateHeaders(privateKey: String, contentType: String): Headers {
         return Headers.Builder().apply {
             add("Authorization", "Token $privateKey")
@@ -44,16 +48,36 @@ class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupServic
         }
     }
 
-    override fun text(lookupValue: String): List<String> {
-        return makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain") {
+    override fun text(lookupValue: String, useCache: Boolean): List<String> {
+        if (useCache && lookupCache.hasTextValue(lookupValue)) {
+            return lookupCache.getTextValue(lookupValue)!!
+        }
+
+        val result = makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain") {
             it.getJsonObject().getStringArray("passages")
         }
+
+        if (useCache) {
+            lookupCache.addTextValue(lookupValue, result)
+        }
+
+        return result
     }
 
-    override fun html(lookupValue: String): List<String> {
-        return makeRequest(PASSAGE_HTML_ENDPOINT, lookupValue, "text/html") {
+    override fun html(lookupValue: String, useCache: Boolean): List<String> {
+        if (useCache && lookupCache.hasHtmlValue(lookupValue)) {
+            return lookupCache.getHtmlValue(lookupValue)!!
+        }
+
+        val result = makeRequest(PASSAGE_HTML_ENDPOINT, lookupValue, "text/html") {
             it.getJsonObject().getStringArray("passages")
         }
+
+        if (useCache) {
+            lookupCache.addHtmlValue(lookupValue, result)
+        }
+
+        return result
     }
 
     override fun searchText(searchText: String): List<SearchResult> {
