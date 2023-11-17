@@ -7,13 +7,11 @@ To use this library you will have to apply for an ESV API key with Crossway (htt
 
 All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Passage Search).
 
-## Releases
+## Recent Releases
 
-* v1.0 (October 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.0/kESV-1.0.jar
+* v1.2 (November 16, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.2/kESV-1.2.jar
 
-* v1.1 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.1/kESV-1.1.jar
-
-* v1.2 (November 26, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.2/kESV-1.2.jar
+* v1.3 (November 17, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.3/kESV-1.3.jar
 
 ## Usage
 
@@ -31,15 +29,15 @@ val text: List<String> = service.text("John 3:16-17",useCache=true)
 // passage html (note: useCache is optiona and defaults to false)
 val html: List<String> = service.html("John 3:16-17",useCache=true)
 
-// passage search
-val searchResult = bibleLookupService.searchText("merciful")
+// passage search (note: useCache is optiona and defaults to false)
+val searchResult = bibleLookupService.searchText("merciful",useCache=true)
 searchResult.forEach { println("${it.reference} -> ${it.content}") }
 
 // random verse
 val randomVerse: Stringh: String = service.randomVerse()
 
 // 4 random verses (param must be 10 or less)
-val randomVerses: Stringh: String = service.randomVerses( 4 )
+val randomVerses: Stringh: String = service.randomVerses(4)
 
 ```
 
@@ -49,5 +47,5 @@ val randomVerses: Stringh: String = service.randomVerses( 4 )
 
 ## TODO
 
-* Implement caching on other queries (beyond text() and html())
+* Caching for mp3Bytes
 * way to limit random verse to NT or OT
