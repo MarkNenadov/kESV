@@ -13,8 +13,8 @@ const val PASSAGE_TEXT_ENDPOINT = "v3/passage/text/"
 const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 const val MAX_RANDOM_VERSES_PER_REQUEST = 10
-class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupService {
-    private val lookupCache = LookupCache()
+class BibleLookupServiceImpl(private val privateKey: String, private val allowCaching: Boolean = true) : BibleLookupService {
+    private val lookupCache = LookupCache(allowCaching)
 
     private fun generateHeaders(privateKey: String, contentType: String): Headers {
         return Headers.Builder().apply {

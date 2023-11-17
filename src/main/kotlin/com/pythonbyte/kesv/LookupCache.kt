@@ -2,20 +2,38 @@ package com.pythonbyte.kesv
 
 const val MAXIMUM_LOOKUP_CACHE_SIZE = 25
 
-class LookupCache {
+class LookupCache(private val allowCaching: Boolean = true) {
     private val textLookupCache = LinkedHashMap<String, List<String>>()
     private val htmlLookupCache = LinkedHashMap<String, List<String>>()
     private val searchLookupCache = LinkedHashMap<String, List<SearchResult>>()
 
-    fun hasTextValue(lookupValue: String) = lookupValue in textLookupCache
+    fun hasTextValue(lookupValue: String): Boolean {
+        require(allowCaching) { "Cache lookups not allowed" }
 
-    fun hasHtmlValue(lookupValue: String) = lookupValue in htmlLookupCache
+        return lookupValue in textLookupCache
+    }
 
-    fun getTextValue(lookupValue: String) = textLookupCache[lookupValue]
+    fun hasHtmlValue(lookupValue: String): Boolean {
+        require(allowCaching) { "Cache lookups not allowed" }
 
-    fun getHtmlValue(lookupValue: String) = htmlLookupCache[lookupValue]
+        return lookupValue in htmlLookupCache
+    }
+
+    fun getTextValue(lookupValue: String): List<String>? {
+        require(allowCaching) { "Cache lookups not allowed" }
+
+        return textLookupCache[lookupValue]
+    }
+
+    fun getHtmlValue(lookupValue: String): List<String>? {
+        require(allowCaching) { "Cache lookups not allowed" }
+
+        return htmlLookupCache[lookupValue]
+    }
 
     fun addTextValue(key: String, value: List<String>) {
+        require(allowCaching) { "Cache lookups not allowed" }
+
         if (textLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = textLookupCache.keys.first()
             textLookupCache.remove(firstKey)
@@ -24,6 +42,8 @@ class LookupCache {
     }
 
     fun addHtmlValue(key: String, value: List<String>) {
+        require(allowCaching) { "Cache lookups not allowed" }
+
         if (htmlLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = htmlLookupCache.keys.first()
             htmlLookupCache.remove(firstKey)
@@ -31,10 +51,20 @@ class LookupCache {
         htmlLookupCache[key] = value
     }
 
-    fun hasSearchValue(searchText: String) = searchText in searchLookupCache
+    fun hasSearchValue(searchText: String): Boolean {
+        require(allowCaching) { "Cache lookups not allowed" }
 
-    fun getSearchValue(searchText: String) = searchLookupCache[searchText]
+        return searchText in searchLookupCache
+    }
+
+    fun getSearchValue(searchText: String): List<SearchResult>? {
+        require(allowCaching) { "Cache lookups not allowed" }
+
+        return searchLookupCache[searchText]
+    }
     fun addSearchValue(key: String, value: List<SearchResult>) {
+        require(allowCaching) { "Cache lookups not allowed" }
+
         if (searchLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = searchLookupCache.keys.first()
             searchLookupCache.remove(firstKey)
