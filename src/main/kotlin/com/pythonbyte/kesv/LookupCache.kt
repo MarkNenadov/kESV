@@ -5,6 +5,7 @@ const val MAXIMUM_LOOKUP_CACHE_SIZE = 25
 class LookupCache {
     private val textLookupCache = LinkedHashMap<String, List<String>>()
     private val htmlLookupCache = LinkedHashMap<String, List<String>>()
+    private val searchLookupCache = LinkedHashMap<String, List<SearchResult>>()
 
     fun hasTextValue(lookupValue: String) = lookupValue in textLookupCache
 
@@ -28,5 +29,16 @@ class LookupCache {
             htmlLookupCache.remove(firstKey)
         }
         htmlLookupCache[key] = value
+    }
+
+    fun hasSearchValue(searchText: String) = searchText in searchLookupCache
+
+    fun getSearchValue(searchText: String) = searchLookupCache[searchText]
+    fun addSearchValue(key: String, value: List<SearchResult>) {
+        if (searchLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
+            val firstKey = searchLookupCache.keys.first()
+            searchLookupCache.remove(firstKey)
+        }
+        searchLookupCache[key] = value
     }
 }

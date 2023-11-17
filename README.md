@@ -50,5 +50,4 @@ val randomVerses: Stringh: String = service.randomVerses( 4 )
 ## TODO
 
 * Implement caching on other queries (beyond text() and html())
-* Size limit the cache in some reasonable way (maybe 50 entries)
 * way to limit random verse to NT or OT

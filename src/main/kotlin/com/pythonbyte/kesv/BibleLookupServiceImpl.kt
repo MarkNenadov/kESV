@@ -80,10 +80,22 @@ class BibleLookupServiceImpl(private val privateKey: String) : BibleLookupServic
         return result
     }
 
-    override fun searchText(searchText: String): List<SearchResult> {
-        return makeRequest(SEARCH_TEXT_ENDPOINT, searchText, "text/plain") {
-            it.getJsonObject().getArray("results").map { SearchResult.create(it) }
+    override fun searchText(searchText: String, useCache: Boolean): List<SearchResult> {
+        if (useCache && lookupCache.hasSearchValue(searchText)) {
+            return lookupCache.getSearchValue(searchText)!!
         }
+
+        val result = makeRequest(SEARCH_TEXT_ENDPOINT, searchText, "text/plain") { response ->
+            response.getJsonObject().getArray("results").map {
+                SearchResult.create(it)
+            }
+        }
+
+        if (useCache) {
+            lookupCache.addSearchValue(searchText, result)
+        }
+
+        return result
     }
 
     override fun randomVerse(): String {

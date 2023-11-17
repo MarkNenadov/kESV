@@ -7,7 +7,7 @@ interface BibleLookupService {
 
     fun html(lookupValue: String, useCache: Boolean = false): List<String>
 
-    fun searchText(searchText: String): List<SearchResult>
+    fun searchText(searchText: String, useCache: Boolean = false): List<SearchResult>
 
     fun randomVerse(): String
 
