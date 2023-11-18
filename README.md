@@ -47,5 +47,4 @@ val randomVerses: Stringh: String = service.randomVerses(4)
 
 ## TODO
 
-* Caching for mp3Bytes
 * way to limit random verse to NT or OT
