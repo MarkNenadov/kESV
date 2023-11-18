@@ -6,6 +6,7 @@ class LookupCache(private val allowCaching: Boolean = true) {
     private val textLookupCache = LinkedHashMap<String, List<String>>()
     private val htmlLookupCache = LinkedHashMap<String, List<String>>()
     private val searchLookupCache = LinkedHashMap<String, List<SearchResult>>()
+    private val mp3BytesLookupCache = LinkedHashMap<String, ByteArray>()
 
     fun hasTextValue(lookupValue: String): Boolean {
         require(allowCaching) { "Cache lookups not allowed" }
@@ -19,6 +20,12 @@ class LookupCache(private val allowCaching: Boolean = true) {
         return lookupValue in htmlLookupCache
     }
 
+    fun hasMp3BytesValue(lookupValue: String): Boolean {
+        require(allowCaching) { "Cache lookups not allowed" }
+
+        return lookupValue in mp3BytesLookupCache
+    }
+
     fun getTextValue(lookupValue: String): List<String>? {
         require(allowCaching) { "Cache lookups not allowed" }
 
@@ -29,6 +36,12 @@ class LookupCache(private val allowCaching: Boolean = true) {
         require(allowCaching) { "Cache lookups not allowed" }
 
         return htmlLookupCache[lookupValue]
+    }
+
+    fun getMp3BytesValue(lookupValue: String): ByteArray? {
+        require(allowCaching) { "Cache lookups not allowed" }
+
+        return mp3BytesLookupCache[lookupValue]
     }
 
     fun addTextValue(key: String, value: List<String>) {
@@ -49,6 +62,16 @@ class LookupCache(private val allowCaching: Boolean = true) {
             htmlLookupCache.remove(firstKey)
         }
         htmlLookupCache[key] = value
+    }
+
+    fun addMp3BytesValue(key: String, value: ByteArray) {
+        require(allowCaching) { "Cache lookups not allowed" }
+
+        if (mp3BytesLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
+            val firstKey = mp3BytesLookupCache.keys.first()
+            mp3BytesLookupCache.remove(firstKey)
+        }
+        mp3BytesLookupCache[key] = value
     }
 
     fun hasSearchValue(searchText: String): Boolean {

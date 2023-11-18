@@ -1,7 +1,7 @@
 package com.pythonbyte.kesv
 
 interface BibleLookupService {
-    fun mp3Bytes(lookupValue: String): ByteArray
+    fun mp3Bytes(lookupValue: String, useCache: Boolean = false): ByteArray
 
     fun text(lookupValue: String, useCache: Boolean = false): List<String>
 

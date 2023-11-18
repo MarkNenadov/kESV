@@ -42,10 +42,20 @@ class BibleLookupServiceImpl(private val privateKey: String, private val allowCa
         }
     }
 
-    override fun mp3Bytes(lookupValue: String): ByteArray {
-        return makeRequest(PASSAGE_AUDIO_ENDPOINT, lookupValue, "audio/mp3") {
+    override fun mp3Bytes(lookupValue: String, useCache: Boolean): ByteArray {
+        if (useCache && lookupCache.hasMp3BytesValue(lookupValue)) {
+            return lookupCache.getMp3BytesValue(lookupValue)!!
+        }
+
+        val result = makeRequest(PASSAGE_AUDIO_ENDPOINT, lookupValue, "audio/mp3") {
             it.getBytes()
         }
+
+        if (useCache) {
+            lookupCache.addMp3BytesValue(lookupValue, result)
+        }
+
+        return result
     }
 
     override fun text(lookupValue: String, useCache: Boolean): List<String> {

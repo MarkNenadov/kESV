@@ -9,9 +9,9 @@ All 4 endpoints are covered (Passage Text, Passage Html, Passage Audio, and Pass
 
 ## Recent Releases
 
-* v1.2 (November 16, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.2/kESV-1.2.jar
-
 * v1.3 (November 17, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.3/kESV-1.3.jar
+* 
+* v1.4 (November 18, 2023) - https://github.com/MarkNenadov/kESV/releases/download/v1.4/kESV-1.4.jar
 
 ## Usage
 
@@ -20,8 +20,8 @@ Note: The following examples are showing explicit typing for the purpose of demo
 ```
 val service = BibleLookupServiceImp("YOUR API KEY"")
 
-// passage audio
-val mp3Bytes: ByteArray = service.mp3Bytes("John 3:16")
+// passage audio (note: useCache is optiona and defaults to false)
+val mp3Bytes: ByteArray = service.mp3Bytes("John 3:16",useCache=true)
 
 // passage text (note: useCache is optiona and defaults to false)
 val text: List<String> = service.text("John 3:16-17",useCache=true)
