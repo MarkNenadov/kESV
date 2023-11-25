@@ -13,10 +13,17 @@ const val PASSAGE_TEXT_ENDPOINT = "v3/passage/text/"
 const val PASSAGE_HTML_ENDPOINT = "v3/passage/html/"
 
 const val MAX_RANDOM_VERSES_PER_REQUEST = 10
-class BibleLookupServiceImpl(private val privateKey: String, private val allowCaching: Boolean = true) : BibleLookupService {
+
+class BibleLookupServiceImpl(
+    private val privateKey: String,
+    private val allowCaching: Boolean = true,
+) : BibleLookupService {
     private val lookupCache = LookupCache(allowCaching)
 
-    private fun generateHeaders(privateKey: String, contentType: String): Headers {
+    private fun generateHeaders(
+        privateKey: String,
+        contentType: String,
+    ): Headers {
         return Headers.Builder().apply {
             add("Authorization", "Token $privateKey")
             add("Content-Type", contentType)
@@ -42,14 +49,18 @@ class BibleLookupServiceImpl(private val privateKey: String, private val allowCa
         }
     }
 
-    override fun mp3Bytes(lookupValue: String, useCache: Boolean): ByteArray {
+    override fun mp3Bytes(
+        lookupValue: String,
+        useCache: Boolean,
+    ): ByteArray {
         if (useCache && lookupCache.hasMp3BytesValue(lookupValue)) {
             return lookupCache.getMp3BytesValue(lookupValue)!!
         }
 
-        val result = makeRequest(PASSAGE_AUDIO_ENDPOINT, lookupValue, "audio/mp3") {
-            it.getBytes()
-        }
+        val result =
+            makeRequest(PASSAGE_AUDIO_ENDPOINT, lookupValue, "audio/mp3") {
+                it.getBytes()
+            }
 
         if (useCache) {
             lookupCache.addMp3BytesValue(lookupValue, result)
@@ -58,14 +69,18 @@ class BibleLookupServiceImpl(private val privateKey: String, private val allowCa
         return result
     }
 
-    override fun text(lookupValue: String, useCache: Boolean): List<String> {
+    override fun text(
+        lookupValue: String,
+        useCache: Boolean,
+    ): List<String> {
         if (useCache && lookupCache.hasTextValue(lookupValue)) {
             return lookupCache.getTextValue(lookupValue)!!
         }
 
-        val result = makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain") {
-            it.getJsonObject().getStringArray("passages")
-        }
+        val result =
+            makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain") {
+                it.getJsonObject().getStringArray("passages")
+            }
 
         if (useCache) {
             lookupCache.addTextValue(lookupValue, result)
@@ -74,14 +89,18 @@ class BibleLookupServiceImpl(private val privateKey: String, private val allowCa
         return result
     }
 
-    override fun html(lookupValue: String, useCache: Boolean): List<String> {
+    override fun html(
+        lookupValue: String,
+        useCache: Boolean,
+    ): List<String> {
         if (useCache && lookupCache.hasHtmlValue(lookupValue)) {
             return lookupCache.getHtmlValue(lookupValue)!!
         }
 
-        val result = makeRequest(PASSAGE_HTML_ENDPOINT, lookupValue, "text/html") {
-            it.getJsonObject().getStringArray("passages")
-        }
+        val result =
+            makeRequest(PASSAGE_HTML_ENDPOINT, lookupValue, "text/html") {
+                it.getJsonObject().getStringArray("passages")
+            }
 
         if (useCache) {
             lookupCache.addHtmlValue(lookupValue, result)
@@ -90,16 +109,20 @@ class BibleLookupServiceImpl(private val privateKey: String, private val allowCa
         return result
     }
 
-    override fun searchText(searchText: String, useCache: Boolean): List<SearchResult> {
+    override fun searchText(
+        searchText: String,
+        useCache: Boolean,
+    ): List<SearchResult> {
         if (useCache && lookupCache.hasSearchValue(searchText)) {
             return lookupCache.getSearchValue(searchText)!!
         }
 
-        val result = makeRequest(SEARCH_TEXT_ENDPOINT, searchText, "text/plain") { response ->
-            response.getJsonObject().getArray("results").map {
-                SearchResult.create(it)
+        val result =
+            makeRequest(SEARCH_TEXT_ENDPOINT, searchText, "text/plain") { response ->
+                response.getJsonObject().getArray("results").map {
+                    SearchResult.create(it)
+                }
             }
-        }
 
         if (useCache) {
             lookupCache.addSearchValue(searchText, result)

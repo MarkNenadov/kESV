@@ -20,10 +20,16 @@ fun getRandomChapterNumber(book: JsonObject): Int {
     return chapterList[Random.nextInt(chapterList.size)].toInt()
 }
 
-fun getVersesInChapter(book: JsonObject, chapterNumber: Int): Int {
+fun getVersesInChapter(
+    book: JsonObject,
+    chapterNumber: Int,
+): Int {
     return book.getString(chapterNumber.toString()).toInt()
 }
 
-fun getRandomVerseNumber(book: JsonObject, chapterNumber: Int): Int {
+fun getRandomVerseNumber(
+    book: JsonObject,
+    chapterNumber: Int,
+): Int {
     return Random.nextInt(getVersesInChapter(book, chapterNumber) + 1)
 }

@@ -44,7 +44,10 @@ class LookupCache(private val allowCaching: Boolean = true) {
         return mp3BytesLookupCache[lookupValue]
     }
 
-    fun addTextValue(key: String, value: List<String>) {
+    fun addTextValue(
+        key: String,
+        value: List<String>,
+    ) {
         require(allowCaching) { "Cache lookups not allowed" }
 
         if (textLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
@@ -54,7 +57,10 @@ class LookupCache(private val allowCaching: Boolean = true) {
         textLookupCache[key] = value
     }
 
-    fun addHtmlValue(key: String, value: List<String>) {
+    fun addHtmlValue(
+        key: String,
+        value: List<String>,
+    ) {
         require(allowCaching) { "Cache lookups not allowed" }
 
         if (htmlLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
@@ -64,7 +70,10 @@ class LookupCache(private val allowCaching: Boolean = true) {
         htmlLookupCache[key] = value
     }
 
-    fun addMp3BytesValue(key: String, value: ByteArray) {
+    fun addMp3BytesValue(
+        key: String,
+        value: ByteArray,
+    ) {
         require(allowCaching) { "Cache lookups not allowed" }
 
         if (mp3BytesLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
@@ -85,7 +94,11 @@ class LookupCache(private val allowCaching: Boolean = true) {
 
         return searchLookupCache[searchText]
     }
-    fun addSearchValue(key: String, value: List<SearchResult>) {
+
+    fun addSearchValue(
+        key: String,
+        value: List<SearchResult>,
+    ) {
         require(allowCaching) { "Cache lookups not allowed" }
 
         if (searchLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
