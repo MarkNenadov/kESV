@@ -4,7 +4,9 @@ import org.pythonbyte.krux.json.JsonObject
 import kotlin.random.Random
 
 fun getBibleDataJsonObject(): JsonObject {
-    val bibleData = BibleLookupServiceImpl::class.java.getResource("bibleData.json")?.readText() ?: ""
+    val bibleData = BibleLookupServiceImpl::class.java.getResource(
+        "bibleData.json",
+    )?.readText() ?: ""
 
     return JsonObject(bibleData)
 }
