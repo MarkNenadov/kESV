@@ -39,7 +39,11 @@ class BibleLookupServiceImpl(
         val passage = lookupValue.utf8UrlValue()
         val url = "$ESV_API_URL_PREFIX$endpoint?q=$passage"
 
-        val request = buildGetRequest(url, generateHeaders(privateKey, contentType))
+        val request =
+            buildGetRequest(
+                url,
+                generateHeaders(privateKey, contentType),
+            )
         val response = sendRequest(request)
 
         return if (response.isOk()) {

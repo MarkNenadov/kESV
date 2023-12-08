@@ -1,26 +1,19 @@
 package com.pythonbyte.kesv
 
+import org.pythonbyte.krux.files.getAsString
+import org.pythonbyte.krux.files.resourceToInputStream
 import org.pythonbyte.krux.json.JsonObject
 import kotlin.random.Random
 
 fun getBibleDataJsonObject(): JsonObject {
-    val bibleData = BibleLookupServiceImpl::class.java.getResource(
-        "bibleData.json",
-    )?.readText() ?: ""
+    val bibleDataStream = resourceToInputStream("bibleData.json")
 
-    return JsonObject(bibleData)
+    return JsonObject(bibleDataStream.getAsString())
 }
 
-fun getRandomBibleBookName(bibleData: JsonObject): String {
-    val bibleBookNames = bibleData.getKeys()
+fun getRandomBibleBookName(bibleData: JsonObject): String = bibleData.getKeys().random()
 
-    return bibleBookNames[Random.nextInt(bibleBookNames.size)]
-}
-
-fun getRandomChapterNumber(book: JsonObject): Int {
-    val chapterList = book.getKeys()
-    return chapterList[Random.nextInt(chapterList.size)].toInt()
-}
+fun getRandomChapterNumber(book: JsonObject): Int = book.getKeys().random().toInt()
 
 fun getVersesInChapter(
     book: JsonObject,
