@@ -41,10 +41,20 @@ val randomVerses: Stringh: String = service.randomVerses(4)
 
 ```
 
-## Thanks
-
-* Thanks to Ben Flannery (https://github.com/oflannabhra) for bible.json (https://github.com/oflannabhra/bible.json), which was used to provide the data necessary for the random Bible verse functionality
-
 ## TODO
 
 * way to limit random verse to NT or OT
+
+## Tech
+
+Kotlin, IntelliJ, Maven
+
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=kotlin,idea,maven" />
+  </a>
+</p>
+
+## Thanks
+
+* Thanks to Ben Flannery (https://github.com/oflannabhra) for bible.json (https://github.com/oflannabhra/bible.json), which was used to provide the data necessary for the random Bible verse functionality
