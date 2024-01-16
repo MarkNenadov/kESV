@@ -1,12 +1,15 @@
 package com.pythonbyte.kesv
 
+import org.pythonbyte.krux.types.ByteArrayArrayCache
+import org.pythonbyte.krux.types.StringArrayCache
+
 const val MAXIMUM_LOOKUP_CACHE_SIZE = 25
 
 class LookupCache(private val allowCaching: Boolean = true) {
-    private val textLookupCache = LinkedHashMap<String, List<String>>()
-    private val htmlLookupCache = LinkedHashMap<String, List<String>>()
+    private val textLookupCache = StringArrayCache()
+    private val htmlLookupCache = StringArrayCache()
     private val searchLookupCache = LinkedHashMap<String, List<SearchResult>>()
-    private val mp3BytesLookupCache = LinkedHashMap<String, ByteArray>()
+    private val mp3BytesLookupCache = ByteArrayArrayCache()
 
     fun hasTextValue(lookupValue: String): Boolean {
         require(allowCaching) { "Cache lookups not allowed" }
