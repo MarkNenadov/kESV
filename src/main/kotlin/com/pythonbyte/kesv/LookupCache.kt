@@ -12,37 +12,37 @@ class LookupCache(private val allowCaching: Boolean = true) {
     private val mp3BytesLookupCache = ByteArrayCache()
 
     fun hasTextValue(lookupValue: String): Boolean {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return lookupValue in textLookupCache
     }
 
     fun hasHtmlValue(lookupValue: String): Boolean {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return lookupValue in htmlLookupCache
     }
 
     fun hasMp3BytesValue(lookupValue: String): Boolean {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return lookupValue in mp3BytesLookupCache
     }
 
     fun getTextValue(lookupValue: String): List<String>? {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return textLookupCache[lookupValue]
     }
 
     fun getHtmlValue(lookupValue: String): List<String>? {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return htmlLookupCache[lookupValue]
     }
 
     fun getMp3BytesValue(lookupValue: String): ByteArray? {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return mp3BytesLookupCache[lookupValue]
     }
@@ -51,7 +51,7 @@ class LookupCache(private val allowCaching: Boolean = true) {
         key: String,
         value: List<String>,
     ) {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         if (textLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = textLookupCache.keys.first()
@@ -64,7 +64,7 @@ class LookupCache(private val allowCaching: Boolean = true) {
         key: String,
         value: List<String>,
     ) {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         if (htmlLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = htmlLookupCache.keys.first()
@@ -77,7 +77,7 @@ class LookupCache(private val allowCaching: Boolean = true) {
         key: String,
         value: ByteArray,
     ) {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         if (mp3BytesLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = mp3BytesLookupCache.keys.first()
@@ -87,13 +87,13 @@ class LookupCache(private val allowCaching: Boolean = true) {
     }
 
     fun hasSearchValue(searchText: String): Boolean {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return searchText in searchLookupCache
     }
 
     fun getSearchValue(searchText: String): List<SearchResult>? {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         return searchLookupCache[searchText]
     }
@@ -102,12 +102,16 @@ class LookupCache(private val allowCaching: Boolean = true) {
         key: String,
         value: List<SearchResult>,
     ) {
-        require(allowCaching) { "Cache lookups not allowed" }
+        requireAllowCaching()
 
         if (searchLookupCache.size > MAXIMUM_LOOKUP_CACHE_SIZE) {
             val firstKey = searchLookupCache.keys.first()
             searchLookupCache.remove(firstKey)
         }
         searchLookupCache[key] = value
+    }
+
+    private fun requireAllowCaching() {
+        require(allowCaching) { "Cache lookups not allowed" }
     }
 }
