@@ -22,7 +22,7 @@ class BibleLookupServiceImpl(
 
     private fun generateHeaders(
         privateKey: String,
-        contentType: String,
+        contentType: String? = "text/plain",
     ): Headers {
         return Headers.Builder().apply {
             add("Authorization", "Token $privateKey")
@@ -33,7 +33,7 @@ class BibleLookupServiceImpl(
     private inline fun <T> makeRequest(
         endpoint: String,
         lookupValue: String,
-        contentType: String,
+        contentType: String? = "text/plain",
         responseHandler: (HttpResponse) -> T,
     ): T {
         val passage = lookupValue.utf8UrlValue()
@@ -57,6 +57,8 @@ class BibleLookupServiceImpl(
         lookupValue: String,
         useCache: Boolean,
     ): ByteArray {
+        require(lookupValue != "") { "Request requires a lookupValue"  }
+
         if (useCache && lookupCache.hasMp3BytesValue(lookupValue)) {
             return lookupCache.getMp3BytesValue(lookupValue)!!
         }
@@ -77,12 +79,14 @@ class BibleLookupServiceImpl(
         lookupValue: String,
         useCache: Boolean,
     ): List<String> {
+        require(lookupValue != "") { "Request requires a lookupValue"  }
+
         if (useCache && lookupCache.hasTextValue(lookupValue)) {
             return lookupCache.getTextValue(lookupValue)!!
         }
 
         val result =
-            makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue, "text/plain") {
+            makeRequest(PASSAGE_TEXT_ENDPOINT, lookupValue) {
                 it.getJsonObject().getStringArray("passages")
             }
 
@@ -97,6 +101,8 @@ class BibleLookupServiceImpl(
         lookupValue: String,
         useCache: Boolean,
     ): List<String> {
+        require(lookupValue != "") { "Request requires a lookupValue"  }
+
         if (useCache && lookupCache.hasHtmlValue(lookupValue)) {
             return lookupCache.getHtmlValue(lookupValue)!!
         }
@@ -122,7 +128,7 @@ class BibleLookupServiceImpl(
         }
 
         val result =
-            makeRequest(SEARCH_TEXT_ENDPOINT, searchText, "text/plain") { response ->
+            makeRequest(SEARCH_TEXT_ENDPOINT, searchText) { response ->
                 response.getJsonObject().getArray("results").map {
                     SearchResult.create(it)
                 }
