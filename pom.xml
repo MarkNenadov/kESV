@@ -31,7 +31,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>2.0.0-Beta2</version>
+                <version>2.0.0-RC2</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -39,6 +39,14 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                        <configuration>
+                            <compilerPlugins>
+                                <plugin>kotlin-maven-noarg</plugin>
+                            </compilerPlugins>
+                            <args>
+                                <arg>-Xskip-prerelease-check</arg>
+                            </args>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
@@ -46,6 +54,14 @@
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
+                        <configuration>
+                            <compilerPlugins>
+                                <plugin>kotlin-maven-noarg</plugin>
+                            </compilerPlugins>
+                            <args>
+                                <arg>-Xskip-prerelease-check</arg>
+                            </args>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -110,19 +126,19 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test-junit5</artifactId>
-            <version>2.0.0-Beta2</version>
+            <version>2.0.0-RC2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.2</version>
+            <version>5.11.0-M1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>2.0.0-Beta2</version>
+            <version>2.0.0-RC2</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
