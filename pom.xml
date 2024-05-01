@@ -40,9 +40,6 @@
                             <goal>compile</goal>
                         </goals>
                         <configuration>
-                            <compilerPlugins>
-                                <plugin>kotlin-maven-noarg</plugin>
-                            </compilerPlugins>
                             <args>
                                 <arg>-Xskip-prerelease-check</arg>
                             </args>
@@ -55,9 +52,6 @@
                             <goal>test-compile</goal>
                         </goals>
                         <configuration>
-                            <compilerPlugins>
-                                <plugin>kotlin-maven-noarg</plugin>
-                            </compilerPlugins>
                             <args>
                                 <arg>-Xskip-prerelease-check</arg>
                             </args>
