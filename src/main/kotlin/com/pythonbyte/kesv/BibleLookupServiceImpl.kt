@@ -149,7 +149,9 @@ class BibleLookupServiceImpl(
             val randomChapterNumber = getRandomChapterNumber(randomBook)
             val randomVerseNumber = getRandomVerseNumber(randomBook, randomChapterNumber)
 
-            text("$randomBibleBookName $randomChapterNumber:$randomVerseNumber")[0]
+            val lookupValue = "$randomBibleBookName $randomChapterNumber:$randomVerseNumber"
+
+            text(lookupValue).firstOrNull() ?: throw BibleLookupException("randomVerse unable to lookup $lookupValue")
         } catch (e: Exception) {
             throw BibleLookupException("An error occurred: ${e.message}")
         }
