@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.compiler.jvmTarget>20</kotlin.compiler.jvmTarget>
+        <kotlin.compiler.jvmTarget>12</kotlin.compiler.jvmTarget>
     </properties>
 
     <repositories>
@@ -107,11 +107,11 @@
                         <id>install-external</id>
                         <phase>clean</phase>
                         <configuration>
-                            <file>${project.basedir}/lib/pythonbyte-krux.jar</file>
+                            <file>${project.basedir}/lib/pythonbyte-krux-jar-with-dependencies.jar</file>
                             <repositoryLayout>default</repositoryLayout>
                             <groupId>org.pythonbyte</groupId>
                             <artifactId>pythonbyte-krux</artifactId>
-                            <version>2.5</version>
+                            <version>3.0</version>
                             <packaging>jar</packaging>
                             <generatePom>true</generatePom>
                         </configuration>
@@ -170,7 +170,7 @@
         <dependency>
             <groupId>org.pythonbyte</groupId>
             <artifactId>pythonbyte-krux</artifactId>
-            <version>2.5</version>
+            <version>3.0</version>
         </dependency>
     </dependencies>
 
