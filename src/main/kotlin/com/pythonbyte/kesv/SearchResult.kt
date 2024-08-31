@@ -5,9 +5,10 @@ import org.pythonbyte.krux.json.JsonObject
 class SearchResult(val reference: String, val content: String) {
     companion object {
         fun create(jsonObject: JsonObject): SearchResult {
+            val (reference, content) = jsonObject.getStrings("reference", "content")
             return SearchResult(
-                jsonObject.getString("reference"),
-                jsonObject.getString("content"),
+                reference,
+                content,
             )
         }
     }
